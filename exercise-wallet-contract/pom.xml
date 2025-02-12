@@ -24,7 +24,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.2.4</version>
         </dependency>
 
         <!-- Swagger Annotations -->
@@ -60,15 +59,15 @@
 
                             <!-- Generator configuration -->
                             <generatorName>spring</generatorName>
-                            <apiPackage>com.playtomic.tests.wallet.restapi</apiPackage>
-                            <modelPackage>com.playtomic.tests.wallet.restapi.model</modelPackage>
-                            <invokerPackage>com.playtomic.tests.wallet.restapi.invoker</invokerPackage>
+                            <apiPackage>com.playtomic.tests.contract.restapi.wallet</apiPackage>
+                            <modelPackage>com.playtomic.tests.contract.restapi.wallet.model</modelPackage>
+                            <invokerPackage>com.playtomic.tests.contract.restapi.wallet.invoker</invokerPackage>
 
                             <configOptions>
                                 <!-- Java Configuration
                                 ref: https://openapi-generator.tech/docs/generators/spring/#config-options -->
                                 <interfaceOnly>true</interfaceOnly> <!-- Generate interfaces only -->
-                                <delegatePattern>true</delegatePattern> <!-- Generate delegate classes -->
+                                <useTags>true</useTags> <!-- Use tag names to generate interfaces -->
                                 <useSpringController>false</useSpringController> <!-- Avoid full Spring controllers -->
                                 <useSpringBoot3>true</useSpringBoot3> <!-- SB 3 annotations (Jakarta over Javax) -->
                             </configOptions>
