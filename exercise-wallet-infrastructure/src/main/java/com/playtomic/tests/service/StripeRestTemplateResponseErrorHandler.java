@@ -1,4 +1,4 @@
-package com.playtomic.tests.wallet.service;
+package com.playtomic.tests.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
