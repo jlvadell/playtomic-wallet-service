@@ -20,5 +20,62 @@
             <artifactId>exercise-wallet-application</artifactId>
         </dependency>
 
+        <!-- Spring Boot Starter Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>3.2.4</version>
+        </dependency>
+
+        <!-- Swagger Annotations -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.28</version>
+        </dependency>
+
+        <!-- Optional: Jackson Databind Nullable (Generated code may need this) -->
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.11.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <!-- Path to your OpenAPI spec -->
+                            <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+
+                            <!-- Generator configuration -->
+                            <generatorName>spring</generatorName>
+                            <apiPackage>com.playtomic.tests.wallet.restapi</apiPackage>
+                            <modelPackage>com.playtomic.tests.wallet.restapi.model</modelPackage>
+                            <invokerPackage>com.playtomic.tests.wallet.restapi.invoker</invokerPackage>
+
+                            <configOptions>
+                                <!-- Java Configuration
+                                ref: https://openapi-generator.tech/docs/generators/spring/#config-options -->
+                                <interfaceOnly>true</interfaceOnly> <!-- Generate interfaces only -->
+                                <delegatePattern>true</delegatePattern> <!-- Generate delegate classes -->
+                                <useSpringController>false</useSpringController> <!-- Avoid full Spring controllers -->
+                                <useSpringBoot3>true</useSpringBoot3> <!-- SB 3 annotations (Jakarta over Javax) -->
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

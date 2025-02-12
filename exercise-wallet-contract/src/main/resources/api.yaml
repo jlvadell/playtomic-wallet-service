@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: Playtomic Wallet Service Public API
+  description: |-
+    Public API designed for the end-user to interact with their wallet.
+
+
+    Author: [Jose vadell](https://www.linkedin.com/in/jlvadell/)
+
+    Some useful links:
+    - [Playtomic carrers](https://playtomic.factorialhr.es/)
+    - [Original exercise repo](https://github.com/syltek/technical-test-backend)
+
+  termsOfService: https://playtomic.io/legal-conditions
+  contact:
+    email: me@jlvadell.com
+  license:
+    name: "(c) Playtomic 2025"
+    url: https://playtomic.io/
+  version: 1.0.0
+servers:
+  - url: https://playtomic.io/api
+tags:
+  - name: wallet
+    description: Operations about user wallet
+
+paths:
+  /v1/wallets/{wallet-id}:
+    get:
+      tags:
+        - wallet
+      summary: find an existing wallet
+      description:  get wallet by Id
+      operationId: findWalletById
+      parameters:
+        - $ref: '#/components/parameters/WalletIdParam'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Wallet not found
+      security:
+        - bearer_auth:
+            - read:wallets
+  /v1/wallets/{wallet-id}/transactions:
+    post:
+      tags:
+        - wallet
+      summary: Add a new transaction
+      description: Add a new transaction to the wallet
+      operationId: addTransaction
+      parameters:
+        - $ref: '#/components/parameters/WalletIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/Transaction'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized
+        '422':
+          description: Validation exception
+      security:
+        - bearer_auth:
+            - write:transactions
+
+components:
+  parameters:
+    WalletIdParam:
+      name: wallet-id
+      in: path
+      description: Wallet Identifier
+      required: true
+      schema:
+        type: string
+        example: "67aba0f1e1e5be81d500a628"
+  schemas:
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "67aba2cbada9148d6e1ef84f"
+        balance:
+          $ref: '#/components/schemas/CurrencyAmount'
+    CurrencyAmount:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+          description: Monetary amount expressed in the smallest unit of the currency (e.g., cents for EUR, pennies for GBP).
+          example: 1000
+        decimal:
+          type: integer
+          format: int32
+          description: The number of decimal places used to represent one unit of the currency (e.g EUR values is 2 because 1 EUR = 100 cents).
+          example: 2
+        currency:
+          type: string
+          format: "iso-4217"
+          description: currency code as specified in ISO 4217.
+          example: "EUR"
+    TransactionRequest:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/CurrencyAmount'
+        card:
+          type: string
+          description: Tokenized card
+          example: "tok_1N3T00LkdIwHu7ixt44h1F8k"
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Transaction identifier
+          example: "67aba2cbada9148d6e1ef84f"
+        amount:
+          $ref: '#/components/schemas/CurrencyAmount'
+        status:
+          type: string
+          x-extensible-enum:
+            - PENDING
+            - COMPLETED
+            - REFUNDED
+          example: "PENDING"
+  requestBodies:
+    Transaction:
+      description: Wallet's transaction request body.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionRequest'
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
