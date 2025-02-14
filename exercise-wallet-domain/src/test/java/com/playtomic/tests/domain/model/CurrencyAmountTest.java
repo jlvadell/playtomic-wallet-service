@@ -15,9 +15,9 @@ class CurrencyAmountTest {
     @DisplayName("add should return correct value")
     void add_shouldReturnCorrectValue() {
         // Given
-        var hundredEuros = HundredEuros();
-        var fiftyEuros = FiftyEuros();
-        var expected = HundredFiftyEuros();
+        var hundredEuros = hundredEuros();
+        var fiftyEuros = fiftyEuros();
+        var expected = hundredFiftyEuros();
         // When
         var actual = hundredEuros.add(fiftyEuros);
         // Then
@@ -28,8 +28,8 @@ class CurrencyAmountTest {
     @DisplayName("add should throw exception when currencies do not match")
     void add_shouldThrowException_whenCurrenciesDoesNotMatch() {
         // Given
-        var hundredEuros = HundredEuros();
-        var hundredDollars = HundredDollars();
+        var hundredEuros = hundredEuros();
+        var hundredDollars = hundredDollars();
         // When-Then
         assertThatThrownBy(() -> hundredEuros.add(hundredDollars)).isExactlyInstanceOf(IllegalArgumentException.class);
     }
@@ -38,7 +38,7 @@ class CurrencyAmountTest {
     @DisplayName("add should throw exception when decimal do not match")
     void add_shouldThrowException_whenDecimalDoesNotMatch() {
         // Given
-        var hundredEuros = HundredEuros();
+        var hundredEuros = hundredEuros();
         var weirdEuros = CurrencyAmount.builder()
                 .value(10000)
                 .decimal(3)
@@ -52,9 +52,9 @@ class CurrencyAmountTest {
     @DisplayName("subtract should return correct value")
     void subtract_shouldReturnCorrectValue() {
         // Given
-        var hundredEuros = HundredEuros();
-        var fiftyEuros = FiftyEuros();
-        var expected = FiftyEuros();
+        var hundredEuros = hundredEuros();
+        var fiftyEuros = fiftyEuros();
+        var expected = fiftyEuros();
         // When
         var actual = hundredEuros.subtract(fiftyEuros);
         // Then
@@ -65,8 +65,8 @@ class CurrencyAmountTest {
     @DisplayName("subtract should throw exception when currencies do not match")
     void subtract_shouldThrowException_whenCurrenciesDoesNotMatch() {
         // Given
-        var hundredEuros = HundredEuros();
-        var hundredDollars = HundredDollars();
+        var hundredEuros = hundredEuros();
+        var hundredDollars = hundredDollars();
         // When-Then
         assertThatThrownBy(() -> hundredEuros.subtract(hundredDollars)).isExactlyInstanceOf(IllegalArgumentException.class);
     }
@@ -75,7 +75,7 @@ class CurrencyAmountTest {
     @DisplayName("subtract should throw exception when decimal do not match")
     void subtract_shouldThrowException_whenDecimalDoesNotMatch() {
         // Given
-        var hundredEuros = HundredEuros();
+        var hundredEuros = hundredEuros();
         var weirdEuros = CurrencyAmount.builder()
                 .value(10000)
                 .decimal(3)
@@ -89,7 +89,7 @@ class CurrencyAmountTest {
     @DisplayName("toBigDecimal should return correct value")
     void toBigDecimal_shouldReturnCorrectValue() {
         // Given
-        var hundredEuros = HundredEuros();
+        var hundredEuros = hundredEuros();
         var expected = new BigDecimal("100.00");
         // When
         var actual = hundredEuros.toBigDecimal();

@@ -6,16 +6,16 @@ import lombok.Value;
 
 import java.math.BigDecimal;
 
-@Builder
-@Value
 @Data
+@Value
+@Builder(toBuilder = true)
 public class CurrencyAmount {
     String currency;
     int value;
     int decimal;
 
     public CurrencyAmount add(CurrencyAmount currencyAmount) {
-        validateSameCurrencyAndDecimal(currencyAmount);
+        checkCurrencyCompatibility(currencyAmount);
         return CurrencyAmount.builder()
                 .currency(this.currency)
                 .value(this.value + currencyAmount.value)
@@ -24,7 +24,7 @@ public class CurrencyAmount {
     }
 
     public CurrencyAmount subtract(CurrencyAmount currencyAmount) {
-        validateSameCurrencyAndDecimal(currencyAmount);
+        checkCurrencyCompatibility(currencyAmount);
         return CurrencyAmount.builder()
                 .currency(this.currency)
                 .value(this.value - currencyAmount.value)
@@ -36,7 +36,15 @@ public class CurrencyAmount {
         return BigDecimal.valueOf(this.value).movePointLeft(this.decimal);
     }
 
-    private void validateSameCurrencyAndDecimal(CurrencyAmount currencyAmount) {
+    public boolean isNegative() {
+        return this.value < 0;
+    }
+
+    public int getAbsoluteValue() {
+        return Math.abs(this.value);
+    }
+
+    public void checkCurrencyCompatibility(CurrencyAmount currencyAmount) {
         if (!this.currency.equals(currencyAmount.currency)) {
             throw new IllegalArgumentException("Currencies do not match: " + this.currency + " vs " + currencyAmount.currency);
         }

@@ -4,7 +4,7 @@ import com.playtomic.tests.domain.model.CurrencyAmount;
 
 public class CurrencyAmountFixtures {
 
-    public static CurrencyAmount HundredEuros() {
+    public static CurrencyAmount hundredEuros() {
         return CurrencyAmount.builder()
                 .value(10000)
                 .decimal(2)
@@ -12,7 +12,7 @@ public class CurrencyAmountFixtures {
                 .build();
     }
 
-    public static CurrencyAmount HundredDollars() {
+    public static CurrencyAmount hundredDollars() {
         return CurrencyAmount.builder()
                 .value(10000)
                 .decimal(2)
@@ -20,7 +20,7 @@ public class CurrencyAmountFixtures {
                 .build();
     }
 
-    public static CurrencyAmount FiftyEuros() {
+    public static CurrencyAmount fiftyEuros() {
         return CurrencyAmount.builder()
                 .value(5000)
                 .decimal(2)
@@ -28,7 +28,15 @@ public class CurrencyAmountFixtures {
                 .build();
     }
 
-    public static CurrencyAmount HundredFiftyEuros() {
+    public static CurrencyAmount negativeFiftyEuros() {
+        return CurrencyAmount.builder()
+                .value(-5000)
+                .decimal(2)
+                .currency("EUR")
+                .build();
+    }
+
+    public static CurrencyAmount hundredFiftyEuros() {
         return CurrencyAmount.builder()
                 .value(15000)
                 .decimal(2)
