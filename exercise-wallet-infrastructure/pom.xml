@@ -33,6 +33,12 @@
         </dependency>
 
         <!-- TEST DEPENDENCIES -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>exercise-wallet-domain</artifactId>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
         <!-- MongoDB -->
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>

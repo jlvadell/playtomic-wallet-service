@@ -19,6 +19,14 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>exercise-wallet-domain</artifactId>
         </dependency>
+
+        <!-- TESTS DEPENDENCIES -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>exercise-wallet-domain</artifactId>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
