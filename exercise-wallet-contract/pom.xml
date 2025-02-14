@@ -62,6 +62,7 @@
                             <apiPackage>com.playtomic.tests.contract.restapi.wallet</apiPackage>
                             <modelPackage>com.playtomic.tests.contract.restapi.wallet.model</modelPackage>
                             <invokerPackage>com.playtomic.tests.contract.restapi.wallet.invoker</invokerPackage>
+                            <modelNameSuffix>Dto</modelNameSuffix>
 
                             <configOptions>
                                 <!-- Java Configuration
