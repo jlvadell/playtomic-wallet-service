@@ -3,11 +3,9 @@ package com.playtomic.tests.application.command.transaction.handler;
 import com.playtomic.tests.application.command.CommandHandler;
 import com.playtomic.tests.application.command.transaction.cmd.CreateTransactionCommand;
 import com.playtomic.tests.application.command.transaction.mapper.TransactionCommandMapper;
-import com.playtomic.tests.application.exception.InsufficientFundsException;
-import com.playtomic.tests.application.exception.PaymentTransactionException;
-import com.playtomic.tests.application.exception.UnauthorizedUserException;
-import com.playtomic.tests.application.exception.UnprocessableEntityException;
+import com.playtomic.tests.application.exception.*;
 import com.playtomic.tests.domain.exception.PaymentProcessingException;
+import com.playtomic.tests.domain.exception.UnprocessableTransactionException;
 import com.playtomic.tests.domain.model.Transaction;
 import com.playtomic.tests.domain.model.Wallet;
 import com.playtomic.tests.domain.repository.WalletRepository;
@@ -106,10 +104,22 @@ public class CreateTransactionCommandHandler implements CommandHandler<CreateTra
 
     private Transaction saveTransaction(Transaction transaction) {
         log.trace("[CreateTransactionCommandHandler::saveTransaction] transaction: {}", transaction);
-        Optional<Transaction> savedTransaction = walletRepository.updateBalance(transaction);
-        if (savedTransaction.isEmpty()) {
-            throw new RuntimeException("Error saving transaction");
+        try {
+            return walletRepository.updateBalance(transaction);
+        } catch (UnprocessableTransactionException ex) {
+            log.error("[CreateTransactionCommandHandler::saveTransaction] Error saving transaction: {}", transaction, ex);
+            rollbackTransaction(transaction);
+            throw new PaymentTransactionException("Error saving transaction", ex.getDetails());
         }
-        return savedTransaction.get();
+    }
+
+    private void rollbackTransaction(Transaction transaction) {
+        log.trace("[CreateTransactionCommandHandler::rollbackTransaction] transaction: {}", transaction);
+        try {
+            paymentService.refundTransaction(transaction);
+        } catch (PaymentProcessingException ex) {
+            log.error("[CreateTransactionCommandHandler::rollbackTransaction] Error rolling back, cannot refund transaction: {}", transaction, ex);
+            throw new InternalUnexpectedException("System couldn't process your payment", ex.getDetails());
+        }
     }
 }

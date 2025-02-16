@@ -3,9 +3,9 @@ package com.playtomic.tests.application.command.transaction.handler;
 
 import com.playtomic.tests.application.command.transaction.cmd.CreateTransactionCommand;
 import com.playtomic.tests.application.command.transaction.mapper.TransactionCommandMapper;
-import com.playtomic.tests.application.exception.InsufficientFundsException;
-import com.playtomic.tests.application.exception.UnauthorizedUserException;
-import com.playtomic.tests.application.exception.UnprocessableEntityException;
+import com.playtomic.tests.application.exception.*;
+import com.playtomic.tests.domain.exception.PaymentProcessingException;
+import com.playtomic.tests.domain.exception.UnprocessableTransactionException;
 import com.playtomic.tests.domain.model.CurrencyAmount;
 import com.playtomic.tests.domain.model.Transaction;
 import com.playtomic.tests.domain.model.TransactionStatus;
@@ -157,8 +157,8 @@ class CreateTransactionCommandHandlerTest {
     }
 
     @Test
-    @DisplayName("handle should throw exception when repository doesn't answer")
-    void handle_shouldThrowException_whenRepositoryDoesNotAnswer() {
+    @DisplayName("handle should rollback when repository fails to update balance")
+    void handle_shouldRollback_whenRepositoryFailsToUpdateBalance() {
         // Given
         var command = negativeFiftyEurosTransactionCommand();
         var transaction = baseTransaction()
@@ -166,16 +166,46 @@ class CreateTransactionCommandHandlerTest {
                 .status(TransactionStatus.PENDING)
                 .build();
         var wallet = walletWithHundredEuros();
+        var confirmedTransaction = transaction.toBuilder()
+                .status(TransactionStatus.CONFIRMED)
+                .build();
         // When
         when(validator.validate(command)).thenReturn(Set.of());
         when(walletRepository.findById(command.getWalletId())).thenReturn(Optional.of(wallet));
         when(mapper.toDomain(command)).thenReturn(transaction);
-        when(walletRepository.updateBalance(any(Transaction.class))).thenReturn(Optional.empty());
+        when(walletRepository.updateBalance(any(Transaction.class))).thenThrow(UnprocessableTransactionException.class);
 
         // Then
         assertThatThrownBy(() -> handler.handle(command))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(PaymentTransactionException.class)
                 .hasMessage("Error saving transaction");
+        verify(paymentService).refundTransaction(confirmedTransaction);
+    }
+
+    @Test
+    @DisplayName("handle should throw exception when rollback fails")
+    void handle_shouldThrowException_whenRollbackFails() {
+        // Given
+        var command = negativeFiftyEurosTransactionCommand();
+        var transaction = baseTransaction()
+                .amount(negativeFiftyEuros())
+                .status(TransactionStatus.PENDING)
+                .build();
+        var wallet = walletWithHundredEuros();
+        var confirmedTransaction = transaction.toBuilder()
+                .status(TransactionStatus.CONFIRMED)
+                .build();
+        // When
+        when(validator.validate(command)).thenReturn(Set.of());
+        when(walletRepository.findById(command.getWalletId())).thenReturn(Optional.of(wallet));
+        when(mapper.toDomain(command)).thenReturn(transaction);
+        when(walletRepository.updateBalance(any(Transaction.class))).thenThrow(UnprocessableTransactionException.class);
+        when(paymentService.refundTransaction(confirmedTransaction)).thenThrow(PaymentProcessingException.class);
+
+        // Then
+        assertThatThrownBy(() -> handler.handle(command))
+                .isInstanceOf(InternalUnexpectedException.class)
+                .hasMessage("System couldn't process your payment");
     }
 
     @Test
@@ -197,7 +227,7 @@ class CreateTransactionCommandHandlerTest {
         when(walletRepository.findById(command.getWalletId())).thenReturn(Optional.of(wallet));
         when(mapper.toDomain(command)).thenReturn(pendingTransaction);
         when(walletRepository.updateBalance(confirmedTransaction))
-                .thenReturn(Optional.of(confirmedTransaction));
+                .thenReturn(confirmedTransaction);
 
         var actual = handler.handle(command);
 
@@ -223,7 +253,7 @@ class CreateTransactionCommandHandlerTest {
         when(paymentService.chargeTransaction(pendingTransaction))
                 .thenReturn(processedTransaction);
         when(walletRepository.updateBalance(confirmedTransaction))
-                .thenReturn(Optional.of(confirmedTransaction));
+                .thenReturn(confirmedTransaction);
 
         var actual = handler.handle(command);
 
