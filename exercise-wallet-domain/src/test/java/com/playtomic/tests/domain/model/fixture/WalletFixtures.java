@@ -10,4 +10,13 @@ public class WalletFixtures {
                 .balance(CurrencyAmountFixtures.hundredEuros())
                 .build();
     }
+
+    public static Wallet walletWithFiftyEuros() {
+        return Wallet.builder()
+                .id("W1")
+                .userId("U1")
+                .balance(CurrencyAmountFixtures.fiftyEuros())
+                .build();
+    }
+
 }

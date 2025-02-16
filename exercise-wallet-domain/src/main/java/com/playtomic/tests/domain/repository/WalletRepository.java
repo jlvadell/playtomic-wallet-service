@@ -12,7 +12,7 @@ public interface WalletRepository {
 
     List<Transaction> findTransactionsByWalletId(String walletId, int page, int size);
 
-    Optional<Transaction> saveTransaction(Transaction transaction);
+    Optional<Transaction> updateBalance(Transaction transaction);
 
     Optional<Transaction> updateTransaction(Transaction transaction);
 }

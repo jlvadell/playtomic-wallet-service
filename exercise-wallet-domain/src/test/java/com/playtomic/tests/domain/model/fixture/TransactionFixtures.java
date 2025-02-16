@@ -13,6 +13,13 @@ public class TransactionFixtures {
                 .build();
     }
 
+    public static Transaction processedPendingCardTransaction() {
+        return baseTransaction()
+                .tokenizedCardId("C1")
+                .externalId("E1")
+                .build();
+    }
+
     public static Transaction confirmedCardTransaction() {
         return baseTransaction()
                 .externalId("E1")
