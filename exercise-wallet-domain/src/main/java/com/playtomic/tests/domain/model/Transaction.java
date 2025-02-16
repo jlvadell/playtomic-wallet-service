@@ -24,6 +24,17 @@ public class Transaction {
         return amount.isNegative();
     }
 
+    public Transaction updateExternalId(String externalId) {
+        return Transaction.builder()
+                .id(id)
+                .walletId(walletId)
+                .tokenizedCardId(tokenizedCardId)
+                .externalId(externalId)
+                .amount(amount)
+                .status(status)
+                .build();
+    }
+
     public Transaction confirmCardPayment() {
         verifyCardPayment();
         return confirm();

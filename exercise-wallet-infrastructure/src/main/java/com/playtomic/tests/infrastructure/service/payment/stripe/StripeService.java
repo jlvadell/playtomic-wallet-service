@@ -1,6 +1,8 @@
-package com.playtomic.tests.service;
+package com.playtomic.tests.infrastructure.service.payment.stripe;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.playtomic.tests.infrastructure.service.payment.stripe.exception.StripeServiceException;
+import com.playtomic.tests.infrastructure.service.payment.stripe.model.Payment;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;

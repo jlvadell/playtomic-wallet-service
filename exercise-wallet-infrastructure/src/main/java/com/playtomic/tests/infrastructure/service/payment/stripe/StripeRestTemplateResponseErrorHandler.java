@@ -1,5 +1,6 @@
-package com.playtomic.tests.service;
+package com.playtomic.tests.infrastructure.service.payment.stripe;
 
+import com.playtomic.tests.infrastructure.service.payment.stripe.exception.StripeAmountTooSmallException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.ClientHttpResponse;

@@ -63,6 +63,21 @@ public class TransactionTest {
     }
 
     @Test
+    @DisplayName("updateExternalId should return new transaction with updated external id")
+    void updateExternalId_shouldReturnTransactionWithUpdatedExternalId() {
+        // Given
+        var transaction = baseTransaction()
+                .build();
+        var expected = transaction.toBuilder()
+                .externalId("E1")
+                .build();
+        // When
+        var actual = transaction.updateExternalId("E1");
+        // Then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
     @DisplayName("confirmCardPayment should return confirmed transaction when card transaction is processed")
     void confirmCardPayment_shouldReturnNewTransactionWithStatusConfirmed_whenCardTransactionIsProcessed() {
         // Given

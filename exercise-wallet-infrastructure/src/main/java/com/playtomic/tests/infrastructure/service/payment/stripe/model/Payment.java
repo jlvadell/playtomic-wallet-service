@@ -1,9 +1,11 @@
-package com.playtomic.tests.service;
+package com.playtomic.tests.infrastructure.service.payment.stripe.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import lombok.NonNull;
 
+@Data
 public class Payment {
 
     @NonNull
