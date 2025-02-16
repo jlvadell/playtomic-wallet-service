@@ -136,6 +136,7 @@ components:
           x-extensible-enum:
             - PENDING
             - COMPLETED
+            - DECLINED
             - REFUNDED
           example: "PENDING"
   requestBodies:
