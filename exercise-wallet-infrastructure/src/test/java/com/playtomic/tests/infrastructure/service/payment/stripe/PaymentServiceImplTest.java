@@ -34,7 +34,7 @@ class PaymentServiceImplTest {
 
         // When
         when(stripeService.charge(pendingCardTransaction().getTokenizedCardId(),
-                pendingCardTransaction().getAmount().toBigDecimal())).thenThrow(new StripeServiceException());
+                pendingCardTransaction().getAmount().toBigDecimal())).thenThrow(new StripeServiceException("Error"));
 
         // Then
         assertThatThrownBy(() -> paymentService.chargeTransaction(transaction))
@@ -55,8 +55,7 @@ class PaymentServiceImplTest {
 
         // Then
         var result = paymentService.chargeTransaction(transaction);
-        assertThat(result).isNotEmpty();
-        assertThat(result.get()).isEqualTo(expected);
+        assertThat(result).isNotNull().isEqualTo(expected);
     }
 
     @Test
@@ -65,7 +64,7 @@ class PaymentServiceImplTest {
         // Given
         var transaction = confirmedCardTransaction();
         // When
-        doThrow(new StripeServiceException()).when(stripeService).refund(transaction.getExternalId());
+        doThrow(new StripeServiceException("")).when(stripeService).refund(transaction.getExternalId());
         // Then
         assertThatThrownBy(() -> paymentService.refundTransaction(transaction))
                 .isInstanceOf(PaymentProcessingException.class)
@@ -79,8 +78,7 @@ class PaymentServiceImplTest {
         var transaction = confirmedCardTransaction();
         // When-Then
         var result = paymentService.refundTransaction(transaction);
-        assertThat(result).isNotEmpty();
-        assertThat(result.get()).isEqualTo(transaction);
+        assertThat(result).isNotNull().isEqualTo(transaction);
     }
 
 }

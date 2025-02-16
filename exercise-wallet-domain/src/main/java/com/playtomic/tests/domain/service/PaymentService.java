@@ -1,13 +1,12 @@
 package com.playtomic.tests.domain.service;
 
+import com.playtomic.tests.domain.exception.PaymentProcessingException;
 import com.playtomic.tests.domain.model.Transaction;
-
-import java.util.Optional;
 
 public interface PaymentService {
 
-    Optional<Transaction> chargeTransaction(Transaction transaction);
+    Transaction chargeTransaction(Transaction transaction) throws PaymentProcessingException;
 
-    Optional<Transaction> refundTransaction(Transaction transaction);
+    Transaction refundTransaction(Transaction transaction) throws PaymentProcessingException;
 
 }

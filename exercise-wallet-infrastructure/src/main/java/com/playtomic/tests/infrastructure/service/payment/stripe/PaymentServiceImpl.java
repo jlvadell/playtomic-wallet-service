@@ -19,26 +19,27 @@ public class PaymentServiceImpl implements PaymentService {
     private final StripeService stripeService;
 
     @Override
-    public Optional<Transaction> chargeTransaction(Transaction transaction) {
+    public Transaction chargeTransaction(Transaction transaction) {
         log.info("[PaymentServiceImpl::chargeTransaction] transaction: {}", transaction);
         try {
             Payment payment = stripeService.charge(transaction.getTokenizedCardId(), transaction.getAmount().toBigDecimal());
-            return Optional.of(transaction.updateExternalId(payment.getId()));
+            return transaction.updateExternalId(payment.getId());
         } catch (StripeServiceException ex) {
             log.error("[PaymentServiceImpl::chargeTransaction] Error charging transaction: {}", transaction, ex);
-            throw new PaymentProcessingException("Error charging transaction", ex);
+            throw new PaymentProcessingException("Error charging transaction", ex.getDetails(), ex);
         }
     }
 
     @Override
-    public Optional<Transaction> refundTransaction(Transaction transaction) {
+    public Transaction refundTransaction(Transaction transaction) {
         log.info("[PaymentServiceImpl::refundTransaction] transaction: {}", transaction);
         try {
             stripeService.refund(transaction.getExternalId());
-            return Optional.of(transaction);
+            return transaction;
         } catch (StripeServiceException ex) {
             log.error("[PaymentServiceImpl::refundTransaction] Error refunding transaction: {}", transaction, ex);
-            throw new PaymentProcessingException("Error refunding transaction", ex);
+            throw new PaymentProcessingException("Error refunding transaction", ex.getDetails(), ex);
         }
     }
+
 }

@@ -3,6 +3,9 @@ package com.playtomic.tests.application.command.transaction.handler;
 
 import com.playtomic.tests.application.command.transaction.cmd.CreateTransactionCommand;
 import com.playtomic.tests.application.command.transaction.mapper.TransactionCommandMapper;
+import com.playtomic.tests.application.exception.InsufficientFundsException;
+import com.playtomic.tests.application.exception.UnauthorizedUserException;
+import com.playtomic.tests.application.exception.UnprocessableEntityException;
 import com.playtomic.tests.domain.model.CurrencyAmount;
 import com.playtomic.tests.domain.model.Transaction;
 import com.playtomic.tests.domain.model.TransactionStatus;
@@ -75,8 +78,8 @@ class CreateTransactionCommandHandlerTest {
         when(validator.validate(command)).thenReturn(Set.of());
         // Then
         assertThatThrownBy(() -> handler.handle(command))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid top-up transaction amount - Card required");
+                .isInstanceOf(UnprocessableEntityException.class)
+                .hasMessage("Invalid transaction");
 
     }
 
@@ -91,8 +94,8 @@ class CreateTransactionCommandHandlerTest {
         when(validator.validate(command)).thenReturn(Set.of());
         // Then
         assertThatThrownBy(() -> handler.handle(command))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid card transaction amount - Negative amount not allowed");
+                .isInstanceOf(UnprocessableEntityException.class)
+                .hasMessage("Invalid transaction");
 
     }
 
@@ -106,8 +109,8 @@ class CreateTransactionCommandHandlerTest {
         when(walletRepository.findById(command.getWalletId())).thenReturn(Optional.empty());
         // Then
         assertThatThrownBy(() -> handler.handle(command))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Wallet not found");
+                .isInstanceOf(UnprocessableEntityException.class)
+                .hasMessage("Wallet inaccessible");
     }
 
     @Test
@@ -124,26 +127,8 @@ class CreateTransactionCommandHandlerTest {
         when(walletRepository.findById(command.getWalletId())).thenReturn(Optional.of(wallet));
         // Then
         assertThatThrownBy(() -> handler.handle(command))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("User not authorized to perform transaction");
-    }
-
-    @Test
-    @DisplayName("handle should throw exception when payment service doesn't answer")
-    void handle_shouldThrowException_whenPaymentServiceDoesNotAnswer() {
-        // Given
-        var command = hundredEurosCardTransactionCommand();
-        var wallet = walletWithHundredEuros();
-        // When
-        when(validator.validate(command)).thenReturn(Set.of());
-        when(walletRepository.findById(command.getWalletId())).thenReturn(Optional.of(wallet));
-        when(mapper.toDomain(command)).thenReturn(pendingCardTransaction());
-        when(paymentService.chargeTransaction(any(Transaction.class))).thenReturn(Optional.empty());
-
-        // Then
-        assertThatThrownBy(() -> handler.handle(command))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Error charging transaction");
+                .isInstanceOf(UnauthorizedUserException.class)
+                .hasMessage("Wallet inaccessible");
     }
 
     @Test
@@ -167,7 +152,7 @@ class CreateTransactionCommandHandlerTest {
 
         // Then
         assertThatThrownBy(() -> handler.handle(command))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(InsufficientFundsException.class)
                 .hasMessage("Insufficient funds");
     }
 
@@ -236,7 +221,7 @@ class CreateTransactionCommandHandlerTest {
         when(walletRepository.findById(command.getWalletId())).thenReturn(Optional.of(wallet));
         when(mapper.toDomain(command)).thenReturn(pendingTransaction);
         when(paymentService.chargeTransaction(pendingTransaction))
-                .thenReturn(Optional.of(processedTransaction));
+                .thenReturn(processedTransaction);
         when(walletRepository.updateBalance(confirmedTransaction))
                 .thenReturn(Optional.of(confirmedTransaction));
 
