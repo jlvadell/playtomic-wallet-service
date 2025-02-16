@@ -28,6 +28,7 @@
 		<java.version>17</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.version>3.13.0</maven.compiler.version>
 		<lombok.version>1.18.36</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 	</properties>
@@ -74,6 +75,11 @@
 				<artifactId>mapstruct</artifactId>
 				<version>${mapstruct.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct-processor</artifactId>
+				<version>${mapstruct.version}</version>
+			</dependency>
 
 			<!-- TEST DEPENDENCIES -->
 			<dependency>
@@ -117,6 +123,18 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+		</dependency>
+
+		<!-- Security -->
+		<!-- Spring security -->
+		<!--Spring security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
 		<!-- Testing -->
