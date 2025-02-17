@@ -61,9 +61,9 @@ public class WalletRepositoryImpl implements WalletRepository {
 
         wallet = wallet.applyTransaction(transaction);
         walletDao.save(walletDocumentMapper.toDocument(wallet));
-        transactionDao.save(transactionDocumentMapper.toDocument(transaction));
+        TransactionDocument doc = transactionDao.save(transactionDocumentMapper.toDocument(transaction));
 
-        return transaction;
+        return transaction.updateId(doc.getId());
     }
 
 }

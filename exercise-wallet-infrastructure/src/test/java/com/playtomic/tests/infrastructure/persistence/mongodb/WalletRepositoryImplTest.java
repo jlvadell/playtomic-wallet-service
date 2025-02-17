@@ -86,6 +86,7 @@ class WalletRepositoryImplTest {
         var walletDocument = new WalletDocument(walletId, "userId", new CurrencyAmountSubDocument(100, 0, "EUR"));
         var walletDocToSave = new WalletDocument();
         var transactionDocToSave = new TransactionDocument();
+        transactionDocToSave.setId("T1");
         var wallet = mock(Wallet.class);
         // When
         when(walletDao.findById(walletId)).thenReturn(Optional.of(walletDocument));
@@ -93,9 +94,10 @@ class WalletRepositoryImplTest {
         when(wallet.applyTransaction(transaction)).thenReturn(wallet);
         when(walletDocumentMapper.toDocument(wallet)).thenReturn(walletDocToSave);
         when(transactionDocumentMapper.toDocument(transaction)).thenReturn(transactionDocToSave);
+        when(transactionDao.save(transactionDocToSave)).thenReturn(transactionDocToSave);
         var actual = walletRepository.updateBalance(transaction);
         // Then
-        assertThat(actual).isEqualTo(transaction);
+        assertThat(actual).isEqualTo(transaction.toBuilder().id("T1").build());
         verify(walletDao).save(walletDocToSave);
         verify(transactionDao).save(transactionDocToSave);
     }
