@@ -5,7 +5,7 @@ import com.playtomic.tests.infrastructure.persistence.mongodb.model.TransactionD
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {CommonSubDocumentMapper.class})
+@Mapper(componentModel = "spring", uses = {CommonSubDocumentMapper.class})
 public interface TransactionDocumentMapper {
 
     TransactionDocumentMapper INSTANCE = Mappers.getMapper(TransactionDocumentMapper.class);

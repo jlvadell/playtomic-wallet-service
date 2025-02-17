@@ -5,7 +5,7 @@ import com.playtomic.tests.infrastructure.persistence.mongodb.model.WalletDocume
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {CommonSubDocumentMapper.class})
+@Mapper(componentModel = "spring", uses = {CommonSubDocumentMapper.class})
 public interface WalletDocumentMapper {
 
     WalletDocumentMapper INSTANCE = Mappers.getMapper(WalletDocumentMapper.class);

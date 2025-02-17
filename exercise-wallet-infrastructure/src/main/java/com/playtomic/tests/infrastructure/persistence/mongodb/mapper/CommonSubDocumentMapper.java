@@ -5,7 +5,7 @@ import com.playtomic.tests.infrastructure.persistence.mongodb.model.CurrencyAmou
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CommonSubDocumentMapper {
 
     CommonSubDocumentMapper INSTANCE = Mappers.getMapper(CommonSubDocumentMapper.class);

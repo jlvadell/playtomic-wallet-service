@@ -7,7 +7,7 @@ import com.playtomic.tests.domain.model.Wallet;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface WalletControllerDtoMapper {
 
     WalletControllerDtoMapper INSTANCE = Mappers.getMapper(WalletControllerDtoMapper.class);
