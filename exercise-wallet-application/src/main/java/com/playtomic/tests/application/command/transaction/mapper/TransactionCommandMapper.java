@@ -14,6 +14,7 @@ public interface TransactionCommandMapper {
 
 
     @Mapping(target = "amount", source = ".")
+    @Mapping(target = "status", constant = "PENDING")
     Transaction toDomain(CreateTransactionCommand command);
 
     @Mapping(target = "value", source = "currencyValue")

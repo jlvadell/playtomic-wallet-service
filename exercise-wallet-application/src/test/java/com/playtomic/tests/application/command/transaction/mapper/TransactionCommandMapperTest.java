@@ -3,6 +3,7 @@ package com.playtomic.tests.application.command.transaction.mapper;
 import com.playtomic.tests.application.command.transaction.cmd.CreateTransactionCommand;
 import com.playtomic.tests.domain.model.CurrencyAmount;
 import com.playtomic.tests.domain.model.Transaction;
+import com.playtomic.tests.domain.model.TransactionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +33,7 @@ class TransactionCommandMapperTest {
                         .decimal(2)
                         .currency("EUR")
                         .build())
+                .status(TransactionStatus.PENDING)
                 .build();
 
         // When
