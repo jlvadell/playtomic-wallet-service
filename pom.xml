@@ -32,6 +32,7 @@
 		<lombok.version>1.18.36</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<karate.version>1.5.1</karate.version>
+		<jacoco.version>0.8.12</jacoco.version>
 	</properties>
 
 	<dependencyManagement>
@@ -145,5 +146,31 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- JaCoCo Plugin -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
