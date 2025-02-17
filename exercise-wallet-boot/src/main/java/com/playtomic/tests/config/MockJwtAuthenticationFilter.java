@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -12,7 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-@Component
+//@Component
 public class MockJwtAuthenticationFilter extends OncePerRequestFilter {
 
     //NOTE: this is a mock implementation of the JWT authentication filter
@@ -31,8 +32,10 @@ public class MockJwtAuthenticationFilter extends OncePerRequestFilter {
         String userId = "U1";
 
         UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(userId, null, List.of());
+                new UsernamePasswordAuthenticationToken(userId, null, List.of(new SimpleGrantedAuthority("wallet:read")));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        System.out.println("Authenticated User: " + SecurityContextHolder.getContext().getAuthentication());
 
         filterChain.doFilter(request, response);
     }
