@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {MongoDbTestConfig.class, WalletRepositoryImpl.class})
-public class WalletRepositoryIT {
+class WalletRepositoryIT {
 
     @Autowired
     private WalletDocumentMapper walletDocumentMapper;
