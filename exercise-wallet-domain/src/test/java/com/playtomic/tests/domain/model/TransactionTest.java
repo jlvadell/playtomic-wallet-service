@@ -10,7 +10,7 @@ import static com.playtomic.tests.domain.model.fixture.TransactionFixtures.pendi
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class TransactionTest {
+class TransactionTest {
 
     @Test
     @DisplayName("requirePaymentProcessing should return true when transaction carries card information")
