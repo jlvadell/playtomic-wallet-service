@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "08142495-6705-4113-b6db-3f64a92c77eb",
+		"name": "Playtomic - Wallet Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28471335"
+	},
+	"item": [
+		{
+			"name": "FindWalletById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server-url}}/v1/wallets/:wallet-id",
+					"host": [
+						"{{server-url}}"
+					],
+					"path": [
+						"v1",
+						"wallets",
+						":wallet-id"
+					],
+					"variable": [
+						{
+							"key": "wallet-id",
+							"value": "67aba2cbada9148d6e1ef84f"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateTransaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"amount\": {\r\n    \"value\": -100,\r\n    \"decimal\": 2,\r\n    \"currency\": \"EUR\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server-url}}/v1/wallets/:wallet-id/transactions",
+					"host": [
+						"{{server-url}}"
+					],
+					"path": [
+						"v1",
+						"wallets",
+						":wallet-id",
+						"transactions"
+					],
+					"variable": [
+						{
+							"key": "wallet-id",
+							"value": "wallet1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "some-token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server-url",
+			"value": "localhost:8090",
+			"type": "string"
+		}
+	]
+}
