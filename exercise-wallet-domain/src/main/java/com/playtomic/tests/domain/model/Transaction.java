@@ -35,6 +35,17 @@ public class Transaction {
                 .build();
     }
 
+    public Transaction updateId(String id) {
+        return Transaction.builder()
+                .id(id)
+                .walletId(walletId)
+                .tokenizedCardId(tokenizedCardId)
+                .externalId(externalId)
+                .amount(amount)
+                .status(status)
+                .build();
+    }
+
     public Transaction confirmCardPayment() {
         verifyCardPayment();
         return confirm();
