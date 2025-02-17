@@ -12,8 +12,6 @@ stripe.simulator.refunds-uri: https://sandbox.playtomic.io/v1/stripe-simulator/p
 spring.config.activate.on-profile: test
 spring:
   data.mongodb:
-    host: localhost
-    port: 0
-    database: playtomic
+    uri: mongodb://localhost:27017/playtomic
 stripe.simulator.charges-uri: http://localhost:9999
 stripe.simulator.refunds-uri: http://localhost:9999
