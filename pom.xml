@@ -10,11 +10,11 @@
 
 	<name>Wallet Service Exercise</name>
 	<modules>
-		<module>exercise-wallet-contract</module>
+		<module>exercise-wallet-domain</module>
 		<module>exercise-wallet-application</module>
+		<module>exercise-wallet-contract</module>
         <module>exercise-wallet-infrastructure</module>
 		<module>exercise-wallet-boot</module>
-		<module>exercise-wallet-domain</module>
 	</modules>
 
 	<parent>
@@ -31,6 +31,7 @@
 		<maven.compiler.version>3.13.0</maven.compiler.version>
 		<lombok.version>1.18.36</lombok.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
+		<karate.version>1.5.1</karate.version>
 	</properties>
 
 	<dependencyManagement>

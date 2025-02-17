@@ -23,6 +23,23 @@
             <groupId>com.playtomic.tests</groupId>
             <artifactId>exercise-wallet-infrastructure</artifactId>
         </dependency>
+
+        <!-- test dependencies -->
+        <!-- Karate UI -->
+        <dependency>
+            <groupId>io.karatelabs</groupId>
+            <artifactId>karate-core</artifactId>
+            <version>${karate.version}</version>
+            <classifier>all</classifier>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.karatelabs</groupId>
+            <artifactId>karate-junit5</artifactId>
+            <version>${karate.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -30,6 +47,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>test-jar</id>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -55,6 +85,7 @@
                 <configuration>
                     <includes>
                         <include>**/*IT.java</include>
+                        <include>**/*.feature</include>
                     </includes>
                     <additionalClasspathElements>
                         <additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
