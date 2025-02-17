@@ -43,8 +43,22 @@ paths:
                 $ref: '#/components/schemas/Wallet'
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: Wallet not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security:
         - bearer_auth:
             - read:wallets
@@ -67,11 +81,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/Transaction'
         '400':
-          description: Invalid input
+          description: aaa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '422':
-          description: Validation exception
+          description: unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502':
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security:
         - bearer_auth:
             - write:transactions
@@ -139,6 +171,17 @@ components:
             - DECLINED
             - REFUNDED
           example: "PENDING"
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: "Invalid wallet id"
+        details:
+          type: string
+          description: Error details
+          example: "wallet-id: 67aba2cbada9148d6e1ef84f is not valid"
   requestBodies:
     Transaction:
       description: Wallet's transaction request body.
