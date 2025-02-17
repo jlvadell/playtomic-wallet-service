@@ -1,5 +1,7 @@
 package com.playtomic.tests.application.query.wallet.handler;
 
+import com.playtomic.tests.application.exception.UnauthorizedUserException;
+import com.playtomic.tests.application.exception.UnprocessableEntityException;
 import com.playtomic.tests.application.query.QueryHandler;
 import com.playtomic.tests.application.query.wallet.query.FindWalletByIdQuery;
 import com.playtomic.tests.domain.model.Wallet;
@@ -34,10 +36,11 @@ public class FindWalletByIdQueryHandler implements QueryHandler<FindWalletByIdQu
     private Wallet fetchAndVerifyOwnership(FindWalletByIdQuery query) {
         log.trace("[FindWalletByIdQueryHandler::fetchAndVerifyOwnership] query: {}", query);
         Wallet wallet = walletRepository.findById(query.getWalletId())
-                .orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
+                .orElseThrow(() -> new UnprocessableEntityException("Wallet inaccessible",
+                        "Wallet was not found"));
 
         if (!Objects.equals(wallet.getUserId(), query.getUserId())) {
-            throw new IllegalArgumentException("Unauthorized access to wallet");
+            throw new UnauthorizedUserException("Wallet inaccessible", "Wallet does not belong to user");
         }
 
         return wallet;

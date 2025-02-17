@@ -1,5 +1,7 @@
 package com.playtomic.tests.application.query.wallet.handler;
 
+import com.playtomic.tests.application.exception.UnauthorizedUserException;
+import com.playtomic.tests.application.exception.UnprocessableEntityException;
 import com.playtomic.tests.application.query.wallet.query.FindWalletByIdQuery;
 import com.playtomic.tests.domain.repository.WalletRepository;
 import jakarta.validation.ConstraintViolation;
@@ -60,8 +62,8 @@ class FindWalletByIdQueryHandlerTest {
         when(walletRepository.findById("W1")).thenReturn(Optional.empty());
         // Then
         assertThatThrownBy(() -> handler.handle(query))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Wallet not found");
+                .isInstanceOf(UnprocessableEntityException.class)
+                .hasMessage("Wallet inaccessible");
     }
 
     @Test
@@ -79,8 +81,8 @@ class FindWalletByIdQueryHandlerTest {
         when(walletRepository.findById("W1")).thenReturn(Optional.of(wallet));
         // Then
         assertThatThrownBy(() -> handler.handle(query))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Unauthorized access to wallet");
+                .isInstanceOf(UnauthorizedUserException.class)
+                .hasMessage("Wallet inaccessible");
     }
 
     @Test
