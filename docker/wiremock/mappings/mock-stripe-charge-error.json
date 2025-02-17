@@ -1,0 +1,19 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "POST",
+    "url": "/stripe/v1/charges",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$[?(@.amount < 10)]"
+      }
+    ]
+  },
+  "response": {
+    "status": 422,
+    "body": "{ \"error\": \"Amount must be at least 10\" }",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

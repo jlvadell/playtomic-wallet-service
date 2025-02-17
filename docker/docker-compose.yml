@@ -10,6 +10,14 @@ services:
       - mongodb_data:/data/db
       - ./mongo-init-scripts:/docker-entrypoint-initdb.d
 
+  wiremock:
+    image: wiremock/wiremock:3.12.0
+    container_name: playtomic-exercise-wallet-service-wiremock
+    ports:
+      - "9999:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+
 volumes:
   mongodb_data:
     driver: local
