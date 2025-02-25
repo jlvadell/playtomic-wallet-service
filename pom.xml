@@ -207,9 +207,9 @@
 
 							<!-- Generator configuration -->
 							<generatorName>spring</generatorName>
-							<apiPackage>com.playtomic.tests.contract.restapi.wallet</apiPackage>
-							<modelPackage>com.playtomic.tests.contract.restapi.wallet.model</modelPackage>
-							<invokerPackage>com.playtomic.tests.contract.restapi.wallet.invoker</invokerPackage>
+							<apiPackage>com.playtomic.tests.controller.wallet</apiPackage>
+							<modelPackage>com.playtomic.tests.controller.wallet.model</modelPackage>
+							<invokerPackage>com.playtomic.tests.controller.wallet.invoker</invokerPackage>
 							<modelNameSuffix>Dto</modelNameSuffix>
 
 							<configOptions>
