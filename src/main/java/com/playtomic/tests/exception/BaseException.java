@@ -8,4 +8,9 @@ public class BaseException extends RuntimeException {
         super(message, cause);
         this.details = details;
     }
+
+    public BaseException(String message, String details) {
+        super(message);
+        this.details = details;
+    }
 }
