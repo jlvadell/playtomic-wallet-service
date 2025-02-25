@@ -1,7 +1,7 @@
 package com.playtomic.tests.service.stripe;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.playtomic.tests.service.stripe.exception.StripeAmountTooSmallException;
+import com.playtomic.tests.service.stripe.exception.StripeServiceException;
 import com.playtomic.tests.service.stripe.model.Payment;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -51,9 +51,9 @@ public class StripeService {
      * @param creditCardNumber The number of the credit card
      * @param amount The amount that will be charged.
      *
-     * @throws StripeAmountTooSmallException
+     * @throws StripeServiceException
      */
-    public Payment charge(@NonNull String creditCardNumber, @NonNull BigDecimal amount) throws StripeAmountTooSmallException {
+    public Payment charge(@NonNull String creditCardNumber, @NonNull BigDecimal amount) throws StripeServiceException {
         ChargeRequest body = new ChargeRequest(creditCardNumber, amount);
         return restTemplate.postForObject(chargesUri, body, Payment.class);
     }
@@ -61,9 +61,9 @@ public class StripeService {
     /**
      * Refunds the specified payment.
      */
-    public void refund(@NonNull String paymentId) throws StripeAmountTooSmallException {
+    public void refund(@NonNull String paymentId) throws StripeServiceException {
         // Object.class because we don't read the body here.
-        restTemplate.postForEntity(chargesUri.toString(), null, Object.class, paymentId);
+        restTemplate.postForEntity(refundsUri.toString(), null, Object.class, paymentId);
     }
 
     @AllArgsConstructor
