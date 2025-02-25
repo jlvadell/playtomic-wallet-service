@@ -97,4 +97,20 @@ class CurrencyAmountTest {
         assertThat(actual).isEqualTo(expected);
     }
 
+    @Test
+    @DisplayName("negate should return negated value")
+    void negate_shouldReturnNegatedValue() {
+        // Given
+        var hundredEuros = hundredEuros();
+        var expected = CurrencyAmount.builder()
+                .value(hundredEuros.getValue() * -1)
+                .decimal(hundredEuros.getDecimal())
+                .currency(hundredEuros.getCurrency())
+                .build();
+        // When
+        var actual = hundredEuros.negate();
+        // Then
+        assertThat(actual).isEqualTo(expected);
+    }
+
 }

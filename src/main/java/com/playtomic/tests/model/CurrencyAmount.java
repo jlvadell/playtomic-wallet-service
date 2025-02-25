@@ -53,5 +53,13 @@ public class CurrencyAmount {
         }
     }
 
+    public CurrencyAmount negate() {
+        return CurrencyAmount.builder()
+                .currency(this.currency)
+                .value(-this.value)
+                .decimal(this.decimal)
+                .build();
+    }
+
 }
 
