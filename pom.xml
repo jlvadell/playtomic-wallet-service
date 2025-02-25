@@ -9,13 +9,6 @@
 	<packaging>pom</packaging>
 
 	<name>Wallet Service Exercise</name>
-	<modules>
-		<module>exercise-wallet-domain</module>
-		<module>exercise-wallet-application</module>
-		<module>exercise-wallet-contract</module>
-        <module>exercise-wallet-infrastructure</module>
-		<module>exercise-wallet-boot</module>
-	</modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -36,33 +29,7 @@
 	</properties>
 
 	<dependencyManagement>
-		<!-- INTERNAL DEPENDENCIES -->
 		<dependencies>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>exercise-wallet-contract</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>exercise-wallet-application</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>exercise-wallet-infrastructure</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>exercise-wallet-boot</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>exercise-wallet-domain</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 
 			<!-- Lombok -->
 			<dependency>
@@ -84,20 +51,7 @@
 			</dependency>
 
 			<!-- TEST DEPENDENCIES -->
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>exercise-wallet-domain</artifactId>
-				<version>${project.version}</version>
-				<classifier>tests</classifier>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>exercise-wallet-application</artifactId>
-				<version>${project.version}</version>
-				<classifier>tests</classifier>
-				<scope>test</scope>
-			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -112,6 +66,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+
+		<!-- Spring Boot Starter Web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<!-- Validation -->
@@ -131,9 +91,37 @@
 			<artifactId>mapstruct-processor</artifactId>
 		</dependency>
 
+		<!-- MongoDB -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo.spring3x</artifactId>
+			<version>4.12.6</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Swagger/OpenAPI -->
+		<!-- Swagger Annotations -->
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.2.28</version>
+		</dependency>
+
+		<!-- Jackson Databind Nullable (Generated code may need this) -->
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+
+
 		<!-- Security -->
 		<!-- Spring security -->
-		<!--Spring security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -145,10 +133,120 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Karate UI -->
+		<dependency>
+			<groupId>io.karatelabs</groupId>
+			<artifactId>karate-core</artifactId>
+			<version>${karate.version}</version>
+			<classifier>all</classifier>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.karatelabs</groupId>
+			<artifactId>karate-junit5</artifactId>
+			<version>${karate.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<!-- Spring Boot Maven Plugin -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<!-- Maven Jar Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>test-jar</id>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Mapstruct processing -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+
+			<!-- OpenAPI Generator Plugin -->
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.11.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<!-- Path to your OpenAPI spec -->
+							<inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+
+							<!-- Generator configuration -->
+							<generatorName>spring</generatorName>
+							<apiPackage>com.playtomic.tests.contract.restapi.wallet</apiPackage>
+							<modelPackage>com.playtomic.tests.contract.restapi.wallet.model</modelPackage>
+							<invokerPackage>com.playtomic.tests.contract.restapi.wallet.invoker</invokerPackage>
+							<modelNameSuffix>Dto</modelNameSuffix>
+
+							<configOptions>
+								<!-- Java Configuration
+                                ref: https://openapi-generator.tech/docs/generators/spring/#config-options -->
+								<interfaceOnly>true</interfaceOnly> <!-- Generate interfaces only -->
+								<useTags>true</useTags> <!-- Use tag names to generate interfaces -->
+								<useSpringController>false</useSpringController> <!-- Avoid full Spring controllers -->
+								<useSpringBoot3>true</useSpringBoot3> <!-- SB 3 annotations (Jakarta over Javax) -->
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Activate integration tests as **IT.java -->
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*IT.java</include>
+						<include>**/*.feature</include>
+					</includes>
+					<additionalClasspathElements>
+						<additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
+					</additionalClasspathElements>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- JaCoCo Plugin -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
