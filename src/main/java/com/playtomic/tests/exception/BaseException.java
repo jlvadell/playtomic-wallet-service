@@ -1,5 +1,8 @@
 package com.playtomic.tests.exception;
 
+import lombok.Getter;
+
+@Getter
 public class BaseException extends RuntimeException {
 
     public final String details;

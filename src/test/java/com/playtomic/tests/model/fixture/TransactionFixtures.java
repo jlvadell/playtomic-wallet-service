@@ -32,6 +32,7 @@ public class TransactionFixtures {
     public static Transaction.TransactionBuilder baseTransaction() {
         return Transaction.builder()
                 .id("T1")
+                .userId("U1")
                 .walletId("W1")
                 .status(TransactionStatus.PENDING)
                 .amount(hundredEuros());

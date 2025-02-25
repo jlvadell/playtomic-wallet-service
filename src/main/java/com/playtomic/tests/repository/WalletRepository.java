@@ -38,7 +38,7 @@ public class WalletRepository {
 
 
     @Transactional(rollbackFor = UnprocessableTransactionException.class)
-    public Transaction updateBalance(Transaction transaction) {
+    public Transaction updateBalance(Transaction transaction) throws UnprocessableTransactionException{
         log.trace("[WalletRepository::updateBalance] transaction: {}", transaction);
         Criteria criteria = Criteria.where("id").is(transaction.getWalletId());
 
