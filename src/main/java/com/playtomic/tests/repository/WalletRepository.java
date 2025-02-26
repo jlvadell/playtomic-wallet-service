@@ -43,11 +43,11 @@ public class WalletRepository {
         Criteria criteria = Criteria.where("id").is(transaction.getWalletId());
 
         if (transaction.getAmount().isNegative()) {
-            criteria.and("balance.amount").gte(transaction.getAmount().getAbsoluteValue());
+            criteria.and("balance.value").gte(transaction.getAmount().getAbsoluteValue());
         }
 
         Query query = new Query(criteria);
-        Update update = new Update().inc("balance.amount", transaction.getAmount().getValue());
+        Update update = new Update().inc("balance.value", transaction.getAmount().getValue());
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true);
         WalletDocument updatedWallet = mongoTemplate.findAndModify(query, update, options, WalletDocument.class);
         if (updatedWallet == null) {

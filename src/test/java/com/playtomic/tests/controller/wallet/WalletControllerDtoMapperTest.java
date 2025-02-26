@@ -97,6 +97,7 @@ class WalletControllerDtoMapperTest {
                         .decimal(2)
                         .currency("EUR")
                         .build())
+                .status(TransactionStatus.PENDING)
                 .build();
         // When
         var actual = mapper.toDomain("userId", "walletId", transactionRequestDto);

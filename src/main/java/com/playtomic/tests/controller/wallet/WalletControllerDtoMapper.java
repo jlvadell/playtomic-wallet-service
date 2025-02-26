@@ -21,6 +21,7 @@ public interface WalletControllerDtoMapper {
     WalletDto toDto(Wallet wallet);
 
     @Mapping(target = "tokenizedCardId", source = "transactionDto.card")
+    @Mapping(target = "status", constant = "PENDING")
     Transaction toDomain(String userId, String walletId, TransactionRequestDto transactionDto);
 
     CurrencyAmount toDomain(CurrencyAmountDto currencyAmountDto);

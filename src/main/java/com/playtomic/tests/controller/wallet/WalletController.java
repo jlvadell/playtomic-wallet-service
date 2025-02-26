@@ -3,7 +3,6 @@ package com.playtomic.tests.controller.wallet;
 import com.playtomic.tests.controller.wallet.model.TransactionDto;
 import com.playtomic.tests.controller.wallet.model.TransactionRequestDto;
 import com.playtomic.tests.controller.wallet.model.WalletDto;
-import com.playtomic.tests.controller.wallet.WalletApi;
 import com.playtomic.tests.model.Transaction;
 import com.playtomic.tests.service.WalletService;
 import lombok.RequiredArgsConstructor;
