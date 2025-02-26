@@ -4,9 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.playtomic.tests</groupId>
-	<artifactId>exercise-wallet</artifactId>
+	<artifactId>playtomic-backend-test</artifactId>
 	<version>0.0.3</version>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 
 	<name>Wallet Service Exercise</name>
 
@@ -26,6 +26,8 @@
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<karate.version>1.5.1</karate.version>
 		<jacoco.version>0.8.12</jacoco.version>
+		<flapdoodle.version>4.18.0</flapdoodle.version>
+		<wiremock.version>3.12.0</wiremock.version>
 	</properties>
 
 	<dependencyManagement>
@@ -97,13 +99,6 @@
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>de.flapdoodle.embed</groupId>
-			<artifactId>de.flapdoodle.embed.mongo.spring3x</artifactId>
-			<version>4.12.6</version>
-			<scope>test</scope>
-		</dependency>
-
 		<!-- Swagger/OpenAPI -->
 		<!-- Swagger Annotations -->
 		<dependency>
@@ -117,6 +112,13 @@
 			<groupId>org.openapitools</groupId>
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>0.2.6</version>
+		</dependency>
+
+		<!-- Commons IO -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.18.0</version>
 		</dependency>
 
 
@@ -148,6 +150,23 @@
 			<version>${karate.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Flapdoodle -->
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo.spring3x</artifactId>
+			<version>${flapdoodle.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Wiremock -->
+
+		<dependency>
+			<groupId>org.wiremock</groupId>
+			<artifactId>wiremock-standalone</artifactId>
+			<version>${wiremock.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -158,21 +177,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<!-- Maven Jar Plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>test-jar</id>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Mapstruct processing -->
+			<!-- Annotation processing -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -181,6 +186,13 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 					<annotationProcessorPaths>
+						<!-- Lombok -->
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<!-- Mapstruct -->
 						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
