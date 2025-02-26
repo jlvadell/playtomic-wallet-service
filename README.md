@@ -12,37 +12,27 @@ This project is a **proof of concept** implementation of a **wallet management s
 ✅ **Testing**
 - **Unit tests** for business logic.
 - **Integration tests** with embedded MongoDB (Flapdoodle).
-- **Acceptance tests** using **Karate UI** with a WireMock server.  
-  ✅ **CI/CD Ready** - Includes JaCoCo coverage reports with SonarQube.
+- **Acceptance tests** using **Karate UI** with a WireMock server.
 
 ---
 
 ## **🛠️ Architecture**
-This project follows a **Hexagonal Architecture** using a **modular structure**:
+This project follows a **MVC Architecture**:
 
 ### **📂 Folder Structure**
 ```
 📦 exercise-wallet 
 ┣ 📂 docker/ # Docker files
 ┣ 📂 postman/ # Postman collections
-┣ 📂 boot/ # Main entry point (Spring Boot) 
-┣ 📂 contract/ # REST Controllers + OpenAPI Specification 
-┣ 📂 application/ # Command/Query Handlers (CQRS) 
-┣ 📂 domain/ # Core Business Logic (Entities, Interfaces) 
-┣ 📂 infrastructure/ # Persistence, External APIs (MongoDB, Stripe) 
-┗ 📜 README.md # This file
+┣ 📜 README.md # This file
+┗ 📂 src/**/java # source code
+    ┣ 📂 config/ # configuration files (jwt, websecurity, etc)
+    ┣ 📂 controller/ # REST Controllers, entry points
+    ┣ 📂 exception/ # Application exceptions
+    ┣ 📂 model/ # Application models
+    ┣ 📂 repository/ # DB repositories
+    ┗ 📂 service/ # internal and External services (Wallet, Stripe) 
 ```
-
-### **📌 Module Responsibilities**
-| **Module**         | **Responsibilities** |
-|--------------------|----------------------|
-| **boot**          | Starts the Spring Boot app. Loads dependencies. |
-| **contract**      | Exposes REST API using OpenAPI-generated controllers. |
-| **application**   | Implements **CQRS** (Commands & Queries). Handles validation & business flows. |
-| **domain**        | Defines **Entities, Value Objects, Interfaces** (pure business logic). |
-| **infrastructure**| Implements repositories, integrates MongoDB & Stripe API. |
-
----
 
 ## **🔗 API Endpoints**
 | Method | Endpoint | Description |
@@ -57,9 +47,7 @@ Check `📂 postman/` for a Postman collection with the API endpoints.
 - To authenticate, include a `Authorization` header with value `Bearer {RANDOM_STRING}`
 
 📌 **API Documentation:**
-- **OpenApi Spec** is located at `📂 contract/src/main/resources/api.yaml`.
-
-- **OpenAPI Spec**: `contract/src/main/resources/rest-api/wallet-service-api.yml`
+- **OpenApi Spec** is located at `📂 /src/main/resources/api.yaml`.
 
 ---
 
@@ -91,12 +79,15 @@ Run **All tests**:
 mvn clean verify
 ```
 
-### 📦 Docker Compose (MongoDB & WireMock)
+Note: No docker needed, it uses embedded MongoDB and WireMock.
+
+### **🚀 Run the Application**
+
+#### 📦 Start Docker Compose (MongoDB & WireMock) for local development
 ```bash
 docker-compose -f docker/docker-compose.yml up -d
 ```
-
-### **🚀 Run the Application**
+#### 🚀 Run the Spring Boot Application
 ```bash
 mvn spring-boot:run
 ```
@@ -108,28 +99,25 @@ mvn spring-boot:run
 ### **🪲 Fixes**
 - **Sonar Integration** -> Sonar isn't picking up jacoco reports.
 - **Coverage** -> Increase test coverage.
-- **Find Wallet transaction** -> Implement a way to find a wallet transaction by ID.
+- **Fix TODOs** -> Fix all the TODOs in the code.
 
 ### **🚀 Enhancements**
 - **Refund Feature** -> Implement refund endpoint.
 - **Transaction History** -> Implement transaction history endpoint.
 - **Use Feign for Stripe** -> Use Feign for a more robust Stripe integration.
-- **Project Loom** -> Upgrade to Java 21 and use Project Loom for better concurrency.
 
 ### **🔧 Technical Debt**
 - **Error Handling** -> Better error handling.
 - **Logging** -> Better logging.
 - **Metrics** -> Grafana integration.
-- **Use of testcontainers** -> Use testcontainers for tests.
 
 ---
 
 ## **💭 Final Thoughts**
 
-This project presents one on many solutions, to this exercise. 
-I have tried to keep it simple, yet complete, focusing on the main requirements. 
-I have also tried to follow best practices, and keep the code clean and organized.
-There's probably a better solution out there but this is the one I came up with in the time I had.
+This is a solution that tries to use a simple architecture to solve the problem. 
+It's not perfect, but it's a good starting point. I've tried to cover the main functionality with tests,
+but there's always room for improvement.
 
 
 
