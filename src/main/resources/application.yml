@@ -18,3 +18,4 @@ spring:
 stripe:
   simulator:
     charges-uri: http://localhost:9999/stripe/v1/charges
+    refunds-uri: https://sandbox.playtomic.io/v1/stripe-simulator/payments/{payment_id}/refunds
