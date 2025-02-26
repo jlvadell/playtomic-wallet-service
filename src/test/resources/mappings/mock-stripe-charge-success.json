@@ -1,0 +1,14 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "POST",
+    "url": "/stripe/v1/charges"
+  },
+  "response": {
+    "status": 200,
+    "body": "{ \"id\": \"ch_1234\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
